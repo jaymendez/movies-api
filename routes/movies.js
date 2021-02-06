@@ -5,15 +5,19 @@ const mongoose = require('mongoose');
 const Movies = require('../models/Movies');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-	Movies.find({
-	}).limit(500).then(movie => {
-		if (!movie) {
-			res.send("error");
-		}
-		console.log(movie)
-		res.json(movie);
-	});
+router.get('/', function (req, res, next) {
+	try {
+		Movies.find({
+		}).limit(200).then(movie => {
+			if (!movie) {
+				res.send("error");
+			}
+			console.log(movie)
+			res.json(movie);
+		});
+	} catch (e) {
+		res.json({ error: "API Failed" })
+	}
 });
 
 module.exports = router;
