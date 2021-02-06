@@ -6,18 +6,21 @@ const Movies = require('../models/Movies');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
-	try {
-		Movies.find({
-		}).limit(200).then(movie => {
+	let limit = 10;
+	if (req.query.limit) {
+		limit = req.query.limit;
+	}
+	console.log(limit)
+	Movies.find()
+		.limit(parseInt(limit, 10))
+		.then(movie => {
 			if (!movie) {
 				res.send("error");
 			}
 			console.log(movie)
 			res.json(movie);
-		});
-	} catch (e) {
-		res.json({ error: "API Failed" })
-	}
+		})
+		.catch(err => res.status(404).json(err));
 });
 
 module.exports = router;
